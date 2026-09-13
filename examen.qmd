@@ -6,7 +6,11 @@ format: html
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(lubridate)
 ```
 
 ## Instrucciones
@@ -52,7 +56,9 @@ Incluye información sobre las estaciones incluyendo el id, el nombre, el año e
 A continuación lee los archivos csv en 2 variables `datos_historicos_raw` y `metadatos`.
 
 ```{r lectura}
+datos_historicos_raw <- read_csv("datos/datos_historicos_raw.csv")
 
+metadatos <- read_csv("datos/metadatos_estaciones.csv")
 ```
 
 Explorá los datos historicos (usando código, principalmente funciones de dplyr) y **hacé una lista de los problemas que identificas**.
