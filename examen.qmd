@@ -11,6 +11,7 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 library(lubridate)
+library(stringr)
 ```
 
 ## Instrucciones
@@ -74,13 +75,37 @@ Lista
 * Los nombres de las columnas X1, X2, X3, X4, X5, X6 y X7 no son descriptivos.
 * Algunas columnas que deberían ser numéricas fueron leídas como character.
 * Hay valores faltantes (NA).
+* Algunas variables numéricas contienen asteriscos junto a los valores, por lo que fueron leídas como character.
 
 ### Limpieza de los datos
 
 A continuación arreglá los datos crudos para poder hacer el análisis de datos. Generá el código necesario para hacer la limpieza y guardá la tabla final la variable `datos_historicos`. El código debe ser una cadena de operaciones usando la pipe, no guardes variables intermedias.
 
 ```{r limpieza-datos-historicos}
-
+datos_historicos <- datos_historicos_raw |>
+  rename(
+    estacion = station,
+    anio = X1,
+    mes = X2,
+    temp_maxima = X3,
+    temp_minima = X4,
+    dias_bajo_cero = X5,
+    precipitacion_xmes = X6,
+    horas_sol = X7
+  ) |>
+  filter(mes != "osed") |>
+  mutate(across(
+    c(temp_maxima, temp_minima, dias_bajo_cero, precipitacion_xmes, horas_sol),
+    ~ str_remove(.x, pattern = "\\*")
+  )) |>
+  mutate(across(
+    c(temp_maxima, temp_minima, dias_bajo_cero, precipitacion_xmes, horas_sol),
+    as.numeric
+  )) |>
+  mutate(
+    fecha = make_datetime(anio, mes),
+    .before = 1
+  )
 ```
 
 El código de arriba debe resolver:
