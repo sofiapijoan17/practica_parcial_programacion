@@ -156,7 +156,25 @@ datos_historicos |>
 ¿Cómo cambia la temperatura minima y maxima a lo largo del tiempo? Graficá el promedio anual a lo largo de los años para las 2 variables en el mismo gráfico. Agregá un título y etiquetas significativas. Si usas colores, deben representar las variables correctamente.
 
 ```{r serie}
-
+datos_historicos |>
+  group_by(anio) |>
+  summarise(
+    temp_maxima = mean(temp_maxima, na.rm = TRUE),
+    temp_minima = mean(temp_minima, na.rm = TRUE)
+  ) |>
+  pivot_longer(
+    cols = c(temp_maxima, temp_minima),
+    names_to = "temperatura",
+    values_to = "promedio"
+  ) |>
+  ggplot(aes(x = anio, y = promedio, color = temperatura)) +
+  geom_line() +
+  labs(
+    title = "Temperatura máxima y mínima promedio anual",
+    x = "Año",
+    y = "Temperatura promedio",
+    color = "Temperatura"
+  )
 ```
 
 Haciendo foco en las estaciones Oxford, Armagh, Durham, Southampton, Sheffield y Stornoway, analisá la precipitación para identificar años de sequía. Calculá la anomalía anual de precipitación (es decir, la diferencia entre la precipitación anual de cada año y la precipitación anual media) y graficá como cambia a lo largo del tiempo. Usá facetas para mostrar los datos de cada estación.
