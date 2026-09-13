@@ -64,13 +64,16 @@ metadatos <- read_csv("datos/metadatos_estaciones.csv")
 Explorá los datos historicos (usando código, principalmente funciones de dplyr) y **hacé una lista de los problemas que identificas**.
 
 ```{r exploración}
+glimpse(datos_historicos_raw)
 
+glimpse(metadatos)
 ```
 
 Lista
 
-* 
-* 
+* Los nombres de las columnas X1, X2, X3, X4, X5, X6 y X7 no son descriptivos.
+* Algunas columnas que deberían ser numéricas fueron leídas como character.
+* Hay valores faltantes (NA).
 
 ### Limpieza de los datos
 
