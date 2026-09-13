@@ -120,7 +120,16 @@ El código de arriba debe resolver:
 ¿Cuál fue la máxima y mínima temperatura registrada en cada estación? Mostrá la respuesta en forma de tabla ordenando las estaciones de mayor amplitud termica mensual (diferencia entre la maxima y la minima) a menor.
 
 ```{r max-min-tabla}
-
+datos_historicos |>
+  group_by(estacion) |>
+  summarise(
+    maxima = max(temp_maxima, na.rm = TRUE),
+    minima = min(temp_minima, na.rm = TRUE)
+  ) |>
+  mutate(
+    amplitud = maxima - minima
+  ) |>
+  arrange(desc(amplitud))
 ```
 
 ¿Cuál es el promedio de precipitación **anual** en cada región de Reino Unido? Región sur se define como las estaciones al sur de 55 grados de latitud y Región norte se define como las estaciones al norte de 55 grados.
