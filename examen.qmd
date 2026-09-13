@@ -135,7 +135,22 @@ datos_historicos |>
 ¿Cuál es el promedio de precipitación **anual** en cada región de Reino Unido? Región sur se define como las estaciones al sur de 55 grados de latitud y Región norte se define como las estaciones al norte de 55 grados.
 
 ```{r regiones}
-
+datos_historicos |>
+  left_join(
+    metadatos,
+    by = c("estacion" = "station")
+  ) |>
+  mutate(
+    region = if_else(lat < 55, "Sur", "Norte")
+  ) |>
+  group_by(estacion, anio, region) |>
+  summarise(
+    precipitacion_anual = sum(precipitacion_xmes, na.rm = TRUE)
+  ) |>
+  group_by(region) |>
+  summarise(
+    promedio_precipitacion_anual = mean(precipitacion_anual, na.rm = TRUE)
+  )
 ```
 
 ¿Cómo cambia la temperatura minima y maxima a lo largo del tiempo? Graficá el promedio anual a lo largo de los años para las 2 variables en el mismo gráfico. Agregá un título y etiquetas significativas. Si usas colores, deben representar las variables correctamente.
